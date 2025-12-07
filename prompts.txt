@@ -1,0 +1,135 @@
+You are an expert React developer tasked with building a highly performant, client-side-only Emoji Translator application using functional components and hooks.
+
+Here are the detailed requirements for the App.jsx component:
+
+UI and State Management:
+
+Create a clean user interface with a title, a <textarea> for user input, a "Translate" button, and an area to display the output.
+
+Use React useState hooks to manage the application's state, including: inputText, translatedText, isLoading, and emojiMap.
+
+Performant Data Handling (CRITICAL):
+
+The application will use a large data file located at /data/emoji.json (this file is in the public/data/ directory).
+
+This file must NOT be imported directly. It must be fetched from the network using fetch() inside a useEffect hook that runs only once when the component mounts.
+
+While the data is being fetched and processed, the isLoading state should be true. The UI must display a clear loading indicator (e.g., a message like "Loading emoji dictionary...") and the "Translate" button should be disabled.
+
+Efficient Emoji Lookup Map:
+
+After the emoji.json data is successfully fetched, you must process it once to create an efficient lookup map (a JavaScript Object or Map).
+
+The emoji.json file is an array of objects, each with "aliases" and "tags" (arrays of strings) and an "emoji" character.
+
+Iterate through this array and create a single map where every string from aliases and tags becomes a key, and the corresponding emoji character is the value.
+
+Store this generated map in the emojiMap state. Once the map is created, set isLoading to false.
+
+Translation Logic:
+
+The translation function should be triggered when the "Translate" button is clicked.
+
+It should take the inputText, split it into words, and for each word:
+
+Sanitize the word by converting it to lowercase and removing basic punctuation for lookup purposes.
+
+Use the generated emojiMap to find a corresponding emoji for the sanitized word.
+
+If a match is found, use the emoji.
+
+If no match is found, use the original word to preserve its original case and punctuation.
+
+Join the results back into a string and display it in the translatedText state.
+
+Final Polish:
+
+The application must be fully self-contained in a single React component file.
+
+Use modern styling with Tailwind CSS to make the UI look clean and professional.
+
+
+2 - You are an expert React developer. Your task is to upgrade an existing client-side Emoji Translator App.jsx component with two new key features: a "Clear" button for user convenience, and a more advanced translation logic that supports multi-word emoji phrases.
+
+Here are the detailed requirements:
+
+Feature 1: Add a "Clear" Button:
+
+In the UI, add a new button next to the existing "Translate" button.
+
+This button should be styled differently to distinguish it (e.g., a gray or red outline).
+
+When clicked, this button must reset both the inputText and translatedText states to empty strings, effectively clearing the text area and the output for the user to start over.
+
+Feature 2: Implement Multi-Word Emoji Mapping (CRITICAL LOGIC UPGRADE):
+
+The current translation logic only handles single words. This needs to be upgraded to recognize and translate common multi-word phrases (e.g., "ice cream" -> "🍦").
+
+Data Pre-processing: The useEffect hook that fetches and processes /data/emoji.json must now be smarter. It needs to create two separate lookup maps:
+
+A multiWordMap for phrases that contain spaces (e.g., { "ice cream": "🍦", "video game": "🎮" }).
+
+A singleWordMap for all other single-word keywords.
+
+The logic should iterate through the aliases and tags from emoji.json and populate the appropriate map based on whether the keyword contains a space character.
+
+New Translation Algorithm: The core translation function must be completely rewritten to use a more advanced parsing strategy that prioritizes longer matches. Do NOT use a simple split(' ') approach. Instead, implement a greedy algorithm that iterates through the input string:
+
+Create a results array.
+
+Use a while loop to process the input string from left to right using an index.
+
+At the current index, first check if any phrases from the multiWordMap are a match. You may need to check for the longest possible phrase match starting at that position.
+
+If a multi-word match is found, push its corresponding emoji to the results array and advance the index past the matched phrase.
+
+If no multi-word match is found, process the text as a single word. Push the translated word (or the original word if no single-word match is found) to the results, and advance the index.
+
+Join the results array at the end to form the final translatedText. This ensures spacing and order are preserved correctly.
+
+Maintain Existing Functionality:
+
+All existing functionality (the core UI layout, fetching data on mount, the loading state, and single-word translations) must be preserved and work seamlessly with the new features.
+
+
+
+Summary of Your Prompts for Amazon Q
+1. Initial App Creation:
+You started with a straightforward request to build the core application.
+
+"Build a React App for an Emoji Translator that converts plain text to emoji-enhanced text, keeping words without mappings and preserving sentence structure."
+
+2. Handling a Large Emoji List (Client-Side):
+You upgraded from a small, hardcoded list to a more robust solution by fetching a large data file.
+
+"Upgrade the React app to fetch a large emoji.json file from the /public folder on startup. Show a loading state, process the file into an efficient lookup map, and then enable translation."
+
+3. Adding "Clear" Button & Multi-Word Logic:
+You added a quality-of-life feature and made the translation logic smarter.
+
+"Add a 'Clear' button to the UI. Upgrade the translation logic to support multi-word phrases like 'ice cream' by creating two separate lookup maps (for single and multi-word) and using a more advanced parsing algorithm."
+
+4. Intelligent Plural Handling:
+You made the translator more intelligent by handling common plurals.
+
+"Upgrade the single-word lookup logic. If a word like 'elephants' isn't found, check if it ends in 's', create a singular guess like 'elephant', and try looking that up."
+
+5. The "Bulletproof" Logic Fix:
+After the AI struggled to combine features, you gave a highly detailed prompt to create a unified, bug-free translation algorithm.
+
+"Fix a bug where multi-word and single-word logic conflict. Implement a unified 'greedy' translation algorithm using a while loop that always prioritizes the longest possible multi-word match before falling back to single-word and plural checks."
+
+6. Reverse Translation Feature:
+You added a major new feature to translate in the opposite direction.
+
+"Add a reverse translation feature. Include a 'Swap' button to toggle the mode, create a new emojiToKeywordsMap for reverse lookups, and implement the emoji-to-text logic."
+
+7. "Enchanted Forest" UI Redesign:
+You gave the app a complete visual overhaul with a beautiful, animated theme.
+
+"Redesign the entire UI into an 'Enchanted Forest' theme using pure CSS. Create a dark green/blue gradient background and add animated animal emojis that drift across the screen. Style the main UI card with a 'glassmorphism' (frosted glass) effect."
+
+8. "Copy to Clipboard" Feature:
+Finally, you added a crucial piece of professional polish to make the app truly useful.
+
+"Add a 'Copy to Clipboard' button inside the output area. The button should show a clipboard icon by default and switch to a checkmark icon for 2 seconds after a successful copy to provide clear user feedback."
